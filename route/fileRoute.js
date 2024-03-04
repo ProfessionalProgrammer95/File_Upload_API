@@ -1,11 +1,12 @@
 
 const fileRoute = require('express').Router()
+const fileConfig = require('../middleware/fileConfig')
 
 const { uploadFile , readAllFiles , readSingleFile , deleteFile} =require('../controller/fileCtrl')
 
 //path
 
-fileRoute.post(`/upload`, uploadFile)
+fileRoute.post(`/upload`,fileConfig, uploadFile)
 
 fileRoute.get(`/all`, readAllFiles)
 

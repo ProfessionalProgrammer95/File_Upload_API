@@ -12,6 +12,9 @@ const PORT = process.env.PORT
 //instance of express
 const app = express()
 
+//declare document folder as static
+app.use(express.static('documents'))
+
 //bodyparser middleware for incoming data
 app.use(express.urlencoded({ extended: true}))
 app.use(express.json())
