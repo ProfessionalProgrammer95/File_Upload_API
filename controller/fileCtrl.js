@@ -15,8 +15,6 @@ const uploadFile =async (req,res) => {
         //file data upload to db 
         let newFile = await File.create(data)
 
-        res.status(StatusCodes.CREATED).json({ data })
-
         res.status(StatusCodes.CREATED).json({status:true, msg:"file uploaded", newFile})
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg : err})
@@ -56,11 +54,12 @@ const deleteFile =async (req,res) => {
             return res.status(StatusCodes.NOT_FOUND).json({status: false, msg:'requested id not found'})
 
             fs.unlinkSync(extFile.path) /* delete file from location*/
+
             await File.findByIdAndDelete(id)
 
         res.status(StatusCodes.ACCEPTED).json({ status:true, msg : ' File Deleted Successfully'})
     } catch (err) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false, msg : err})
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false, msg : err.message})
         
     }
 }
