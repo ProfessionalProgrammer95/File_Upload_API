@@ -13,6 +13,7 @@ const myStorage = multer.diskStorage({
     }
 });
 
+
 //multer config
 const fileConfig = multer({
     storage:myStorage,

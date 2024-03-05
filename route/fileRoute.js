@@ -6,7 +6,7 @@ const { uploadFile , readAllFiles , readSingleFile , deleteFile} =require('../co
 
 //path
 
-fileRoute.post(`/upload`,fileConfig, uploadFile)
+fileRoute.post(`/upload`, fileConfig , uploadFile)
 
 fileRoute.get(`/all`, readAllFiles)
 
