@@ -48,17 +48,26 @@ const readSingleFile =async (req,res) => {
 //read delete files - delete(id)
 const deleteFile =async (req,res) => {
     try {
+        //reading file id from router parameter
         let id = req.params.id
+
+        //file is exists in db or not
         let extFile = await File.findById(id)
+
+        //if file not exists -> throw err
         if(!extFile)
             return res.status(StatusCodes.NOT_FOUND).json({status: false, msg:'requested id not found'})
 
+        //delete file from location
             fs.unlinkSync(extFile.path) /* delete file from location*/
 
+        //deleting db content
             await File.findByIdAndDelete(id)
 
+        //final response
         res.status(StatusCodes.ACCEPTED).json({ status:true, msg : ' File Deleted Successfully'})
     } catch (err) {
+        //logical error
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({status:false, msg : err.message})
         
     }
