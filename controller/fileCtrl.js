@@ -23,7 +23,10 @@ const uploadFile =async (req,res) => {
 //read all files - get
 const readAllFiles =async (req,res) => {
     try {
+        //to find  all the documents in collection and send as a response
         let data = await File.find({})
+
+        //final response
         res.status(StatusCodes.ACCEPTED).json({ status:true, length:data.length, files:data})
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg : err})
@@ -34,10 +37,16 @@ const readAllFiles =async (req,res) => {
 //read single files - get(id)
 const readSingleFile =async (req,res) => {
     try {
+        //reading file id from router parameter
         let id = req.params.id
+
+        //file exists in db or not
         let extFile = await File.findById(id)
+
+        //if not exists throw error
         if(!extFile)
             return res.status(StatusCodes.NOT_FOUND).json({status: false, msg: 'requested is not found'})
+        //final response
         res.status(StatusCodes.ACCEPTED).json({ status:true, file:extFile})
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg : err})
