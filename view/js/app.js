@@ -11,13 +11,29 @@ const readFiles = async() => {
     }).catch(err => console.log(err.message))
 }
 
+//delete file
+const delFile = async (id) => {
+    if(window.confirm(`Are you  sure to delete a file?`)){
+        await fetch(`/api/file/delete/${id}`,{
+            method: "DELETE"
+        }).then(res => res.json())
+        .then(res=> {
+            alert(res.msg)
+            window.location.reload()
+        }).catch(err => console.log(err.msg))
+    } else {
+        return;
+    }
+}
+
 //to print the file
 const printData = (data) => {
     data.forEach((item,index) => {
         files.innerHTML += `<div class="col-md-4 col-lg-4 col-sm-12 mt-2 mb-2">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header justify-content-between d-flex">
                                         <h5 class="text-dark text-center text-capitalize"> ${item.filename}</h5>
+                                        <button onclick="delFile('${item._id}')" class="btn-close"></button>
                                     </div>
                                     <div class="card-body">
                                         <ul class="list-group">
