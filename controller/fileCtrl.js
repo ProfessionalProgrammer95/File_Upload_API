@@ -7,6 +7,7 @@ const uploadFile =async (req,res) => {
     try {
         //to file data -> req.file
         let data = req.file
+        //  let data = req.files -> mulitple files
 
         //to validate file already exists or not
         let extFile = await File.findOne({originalname:data.originalname})
