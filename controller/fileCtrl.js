@@ -1,6 +1,7 @@
 const { StatusCodes } = require('http-status-codes')
 const File = require('../model/file')
 const fs = require('fs')
+const mailsend = require("../config/mail")
 
 //upload File - post
 const uploadFile =async (req,res) => {
@@ -11,12 +12,27 @@ const uploadFile =async (req,res) => {
 
         //to validate file already exists or not
         let extFile = await File.findOne({originalname:data.originalname})
-            if(extFile)
+            if(extFile){
+                fs.unlinkSync(data.path)
                 return res.status(StatusCodes.CONFLICT).json({msg:`file already exist`})
+            }
+
+
         //file data upload to db 
         let newFile = await File.create(data)
 
-        res.status(StatusCodes.CREATED).json({status:true, msg:"file uploaded", newFile})
+        //attachments data
+        let fileData = [
+            {
+                filename:newFile.filename,
+                path:newFile.path
+            }
+        ]
+
+        //sending email with attachments
+        let mailRes = await mailsend("rakshithav1358@gmail.com", "File attachment", "Welcome to file api with file attachment", fileData)
+
+        res.status(StatusCodes.CREATED).json({status:true, msg:"file uploaded", newFile, mailRes})
     } catch (err) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ status:false, msg : err})
     }
